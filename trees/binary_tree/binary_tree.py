@@ -1,4 +1,4 @@
-from binary_node import BinaryNode
+from .binary_node import BinaryNode
 
 class BinaryTree:
     def __init__(self, node=None):
@@ -138,25 +138,25 @@ class BinaryTree:
             current_father = current_father.get_father()
         return current_father
 
-    def preorder(self, node, list=[]):
+    def pre_order(self, node, list=[]):
         if node is not None:
-            list.append(node.get_info())
-            self.preorder(node.get_left_child(), list)
-            self.preorder(node.get_right_child(), list)
+            list.append(node)
+            self.pre_order(node.get_left_child(), list)
+            self.pre_order(node.get_right_child(), list)
         return list
     
-    def inorder(self, node, list=[]):
+    def in_order(self, node, list=[]):
         if node is not None:
-            self.inorder(node.get_left_child(), list)
-            list.append(node.get_info())
-            self.inorder(node.get_right_child(), list)
+            self.in_order(node.get_left_child(), list)
+            list.append(node)
+            self.in_order(node.get_right_child(), list)
         return list
     
-    def postorder(self, node, list=[]):
+    def post_order(self, node, list=[]):
         if node is not None:
-            self.postorder(node.get_left_child(), list)
-            self.postorder(node.get_right_child(), list)
-            list.append(node.get_info())
+            self.post_order(node.get_left_child(), list)
+            self.post_order(node.get_right_child(), list)
+            list.append(node)
         return list
 
     def repeated_numbers(self, list):
