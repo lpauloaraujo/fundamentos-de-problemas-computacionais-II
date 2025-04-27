@@ -1,4 +1,4 @@
-from ..binary_tree.binary_node import BinaryNode
+from trees.binary_tree.binary_node import BinaryNode
 
 class AVLNode(BinaryNode):
     def __init__(self, value):

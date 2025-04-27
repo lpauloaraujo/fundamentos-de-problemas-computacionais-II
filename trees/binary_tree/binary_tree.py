@@ -1,4 +1,4 @@
-from .binary_node import BinaryNode
+from trees.binary_tree.binary_node import BinaryNode
 
 class BinaryTree:
     def __init__(self, node=None):
@@ -138,21 +138,27 @@ class BinaryTree:
             current_father = current_father.get_father()
         return current_father
 
-    def pre_order(self, node, list=[]):
+    def pre_order(self, node, list=None):
+        if list is None: 
+            list = []
         if node is not None:
             list.append(node)
             self.pre_order(node.get_left_child(), list)
             self.pre_order(node.get_right_child(), list)
         return list
     
-    def in_order(self, node, list=[]):
+    def in_order(self, node, list=None):
+        if list is None: 
+            list = []
         if node is not None:
             self.in_order(node.get_left_child(), list)
             list.append(node)
             self.in_order(node.get_right_child(), list)
         return list
     
-    def post_order(self, node, list=[]):
+    def post_order(self, node, list=None):
+        if list is None: 
+            list = []
         if node is not None:
             self.post_order(node.get_left_child(), list)
             self.post_order(node.get_right_child(), list)
