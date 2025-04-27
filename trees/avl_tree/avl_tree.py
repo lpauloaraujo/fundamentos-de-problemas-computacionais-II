@@ -29,13 +29,95 @@ class AVLTree(BinaryTree):
                     return True 
                 current = current.get_right_child()
     
-    def balance(self):
-        pre_order = self.pre_order(self.root)
+    def delete(self, node):
+        father = node.get_father()
+        left_child = node.get_left_child()
+        right_child = node.get_right_child()
+
+        if left_child is not None and right_child is not None:
+            sucessor = self.sucessor(node)
+            sucessor_right_child = sucessor.get_right_child()
+            self.delete(sucessor)
+            sucessor.set_left_child(left_child)
+            left_child.set_father(sucessor)
+            node.set_left_child(None)
+
+            if right_child != sucessor:
+                sucessor.set_right_child(right_child)
+                right_child.set_father(sucessor)
+            else:
+                sucessor.set_right_child(sucessor_right_child)
+                sucessor_right_child.set_father(sucessor)       
+            node.set_right_child(None)
+
+            if father is None:
+                self.root = sucessor
+                sucessor.set_father(None)
+            else:
+                if node.is_left():
+                    father.set_left_child(sucessor)
+                else:
+                    father.set_right_child(sucessor)
+                sucessor.set_father(father)
+            node.set_father(None)
+
+        elif left_child is not None:
+            if father is None:
+                self.root = left_child
+                left_child.set_father(None)
+            else:
+                if node.is_left():
+                    father.set_left_child(left_child)
+                else:
+                    father.set_right_child(left_child)
+                left_child.set_father(father)
+
+            node.set_left_child(None)
+            node.set_father(None)
+
+        elif right_child is not None:
+            if father is None:
+                self.root = right_child
+                right_child.set_father(None)
+            else:
+                if node.is_left():
+                    father.set_left_child(right_child)
+                else:
+                    father.set_right_child(right_child)
+                right_child.set_father(father)
+
+            node.set_right_child(None)
+            node.set_father(None)
+
+        else:
+            if father is None:
+                self.root = None
+            else:
+                if node.is_left():
+                    father.set_left_child(None)
+                else:
+                    father.set_right_child(None)
+
+            node.set_father(None)
+
+        
         self.update_balancing_factors()
-        for node in pre_order:
-            if node.get_balancing_factor() >= 2 or node.get_balancing_factor() <= -2:
-                self.rotate(node)
-                break
+        self.balance()
+
+        return node
+
+    def balance(self):
+        while True:
+            self.update_balancing_factors()
+            pre_order = self.pre_order(self.root)
+            balanced = True 
+            for node in pre_order:
+                if node.get_balancing_factor() >= 2 or node.get_balancing_factor() <= -2:
+                    self.rotate(node)
+                    balanced = False  
+                    break
+            if balanced:
+                break  
 
     def calculate_height(self, node):
         if node is None:
@@ -69,6 +151,8 @@ class AVLTree(BinaryTree):
                 avl_node.get_right_child())
             avl_node.set_balancing_factor(
                 right_child_height - left_child_height)
+        pre_order = self.pre_order(self.root)
+        return [f"{node.get_info()}: {node.get_balancing_factor()}" for node in pre_order]
 
     def left_rotate(self, node):
         node_right_child = node.get_right_child()
