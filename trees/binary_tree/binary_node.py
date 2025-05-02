@@ -43,4 +43,3 @@ class BinaryNode:
             return self.father.get_right_child()
         elif self.is_right:
             return self.father.get_left_child()
-
