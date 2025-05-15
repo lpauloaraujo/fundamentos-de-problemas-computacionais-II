@@ -1,6 +1,6 @@
 from utils.dl_list import DL_List
 
-class AJ_Vertex:
+class AL_Vertex:
     def __init__(self, id):
         self.id = str(id)
         self.edges = DL_List()

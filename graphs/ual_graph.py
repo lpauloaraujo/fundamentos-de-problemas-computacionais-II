@@ -1,18 +1,18 @@
 from queue import Queue
 from utils.dl_list import DL_List
 
-class UAJ_Graph:
+class UAL_Graph:
     def __init__(self):
-        self.vertex_list = DL_List()
+        self.vertices_list = DL_List()
 
     def insert_vertex(self, vertex):
-        self.vertex_list.insert_at_ending(vertex)
+        self.vertices_list.insert_at_ending(vertex)
 
     def insert_edges(self, edges):
         vertexa = None
         vertexb = None
         vertexaid, vertexbid = edges
-        current_vertex = self.vertex_list.beginning
+        current_vertex = self.vertices_list.beginning
 
         while vertexa is None and vertexb is None:
             if current_vertex.data.id == vertexaid:
@@ -31,7 +31,7 @@ class UAJ_Graph:
             return True
 
     def bfs(self, start_vertex):
-        current_vertex = self.vertex_list.beginning
+        current_vertex = self.vertices_list.beginning
         while current_vertex is not None:
             current_vertex.data.color = 'w'
             current_vertex.data.distance = -1
@@ -62,7 +62,7 @@ class UAJ_Graph:
 
     def __str__(self):
         string = ""
-        current_vertex = self.vertex_list.beginning
+        current_vertex = self.vertices_list.beginning
         while current_vertex is not None:
             string += f"{str(current_vertex.data)}"
             current_vertex = current_vertex.next
