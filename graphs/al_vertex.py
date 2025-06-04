@@ -7,7 +7,7 @@ class AL_Vertex:
         self.color = None
         self.distance = None
         self.predecessor = None
-        self.key
+        self.key = None
     
     def __str__(self):
         if self.edges.is_empty():
