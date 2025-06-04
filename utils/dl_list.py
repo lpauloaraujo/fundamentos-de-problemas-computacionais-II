@@ -60,6 +60,6 @@ class DL_List():
         string = ""
         current_node = self.beginning
         while current_node is not None:
-            string += f"{current_node.data}"
+            string += f"{current_node["vertex"].data}"
             current_node = current_node.next
         return string

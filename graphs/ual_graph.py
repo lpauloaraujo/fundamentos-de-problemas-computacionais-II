@@ -25,10 +25,28 @@ class UAL_Graph:
             print("Um ou mais dos dois vértices a formarem a aresta não existem.")
             return False
         
-        else:
-            vertexa.edges.insert_at_ending(vertexb)
-            vertexb.edges.insert_at_ending(vertexa)
-            return True
+        size = float(input("Edge size: "))
+        edge = {"vertexa": vertexa, "vertexb": vertexb, "size": size}
+
+        
+        vertexa.edges.insert_at_ending(edge)
+        vertexb.edges.insert_at_ending(edge)
+        return True
+
+    def get_edges(self):
+        edges = []
+        current_vertex = self.vertices_list.beginning
+        while current_vertex is not None:
+            current_edge = current_vertex.data.edges.beggining
+            while current_edge is not None:
+                if current_edge not in edges:
+                    edges.append(current_edge)
+        return edges
+
+    def get_sorted_edges(self):
+        edges = self.get_edges
+        sorted_edges = sorted(edges, key=lambda x: x["size"])
+        return sorted_edges
 
     def bfs(self, start_vertex):
         current_vertex = self.vertices_list.beginning
@@ -46,11 +64,11 @@ class UAL_Graph:
             current_vertex = queue.get()
             current_edge = current_vertex.edges.beginning
             while current_edge is not None:
-                if current_edge.data.color == 'w':
-                    current_edge.data.color = 'g'
-                    current_edge.data.distance = current_vertex.distance + 1
-                    current_edge.data.predecessor = current_vertex
-                    queue.put(current_edge.data)
+                if current_edge["vertex"].data.color == 'w':
+                    current_edge["vertex"].data.color = 'g'
+                    current_edge["vertex"].data.distance = current_vertex.distance + current_edge["size"]
+                    current_edge["vertex"].data.predecessor = current_vertex
+                    queue.put(current_edge["vertex"].data)
                 current_edge = current_edge.next
             current_vertex.color = 'b'
 
@@ -59,6 +77,57 @@ class UAL_Graph:
 
     def dfs_visit(self, vertex):
         pass
+
+    def mst_kruskal(self):
+        a = set()
+        forest = []
+
+        def make_set(vertex):
+            return {vertex}
+        
+        def union(set_x, set_y):
+            union = set_x.union(set_y)
+            return union
+        
+        def find_set(x, foreest):
+            for tree in forest:
+                if x in tree:
+                    return tree
+        
+        current_vertex = self.vertices_list.beginning
+
+        while current_vertex is not None:
+            new_tree = make_set(current_vertex.data.id)
+            forest.append(new_tree)
+            current_vertex = current_vertex.next
+
+        sorted_edges = self.get_sorted_edges()
+
+        for edge in sorted_edges:
+            a_tree = find_set(edge["vertexa"])
+            b_tree = find_set(edge["vertexb"])
+            if a_tree != b_tree:
+                ab_tree = a_tree.union(b_tree)
+                forest.remove(a_tree)
+                forest.remove(b_tree)
+                forest.append(ab_tree)
+                a = a.union(ab_tree)
+        
+        return a
+
+    def mst_prim(self, weight, root):
+        queue = Queue()
+        current_vertex = self.vertices_list.beginning
+        while current_vertex is not None:
+            if current_vertex.data == root:
+                current_vertex.data.key = 0
+            else:
+                current_vertex.data.key = float('inf')
+            current_vertex.data.predecessor = None
+            queue.put(current_vertex.data)
+        while queue.empty() is False:
+            pass
+
 
     def __str__(self):
         string = ""
